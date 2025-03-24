@@ -1,4 +1,3 @@
-// api/proxy.js
 import { v4 as uuidv4 } from 'uuid';
 
 export default async function handler(req, res) {
@@ -19,7 +18,7 @@ export default async function handler(req, res) {
 
     const requestBody = {
       ...req.body,
-      sessionId: req.body.sessionId || uuidv4() // genera sessionId si no existe
+      sessionId: req.body.sessionId || null
     };
 
     const response = await fetch(targetUrl, {
@@ -31,8 +30,8 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     const formattedResponse = [{
-      sessionId: requestBody.sessionId,  // siempre devuelve sessionId
-      chatInput: data.message || data.chatInput || 'Sin respuesta',
+      sessionId: requestBody.sessionId || null,
+      chatInput: data.output || data.message || data.chatInput || 'Sin respuesta',
     }];
 
     return res.status(200).json(formattedResponse);
