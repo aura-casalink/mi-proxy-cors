@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
     const requestBody = {
       ...req.body,
-      sessionId: req.body.sessionId || null
+      sessionId: req.body.sessionId || uuidv4() // Genera nuevo sessionId si es null
     };
 
     const response = await fetch(targetUrl, {
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     const formattedResponse = [{
-      sessionId: requestBody.sessionId || null,
+      sessionId: requestBody.sessionId, // Devuelve siempre el nuevo o existente sessionId
       chatInput: data.output || data.message || data.chatInput || 'Sin respuesta',
     }];
 
